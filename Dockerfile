@@ -1,16 +1,36 @@
-FROM debian:12-slim
-LABEL org.opencontainers.image.authors="steef@debruijn.ws"
+FROM photon:latest
 
-RUN apt-get update \
-        && apt-get -y upgrade \
-        && apt-get -y install bash curl bzip2 ffmpeg cifs-utils alsa-utils libicu72
+LABEL org.opencontainers.image.authors="david@indisko.com"
 
-ENV ROON_SERVER_PKG RoonServer_linuxx64.tar.bz2
-ENV ROON_SERVER_URL https://download.roonlabs.net/builds/${ROON_SERVER_PKG}
-ENV ROON_DATAROOT /data
-ENV ROON_ID_DIR /data
+ENV FFMPEG_PKG=ffmpeg-git-amd64-static.tar.xz
+
+WORKDIR "/root"
+
+RUN tdnf update -y \
+        && tdnf -y install sudo bzip2 cifs-utils alsa-utils wget icu xz
+
+RUN curl -O https://johnvansickle.com/ffmpeg/builds/${FFMPEG_PKG}
+
+RUN tar -xf ${FFMPEG_PKG} && rm ${FFMPEG_PKG}
+
+RUN mv ffmpeg-git-* /var/lib/ffmpeg
+
+WORKDIR "/var/lib/ffmpeg"
+
+RUN ln -s "${PWD}/ffmpeg" /usr/local/bin/ \
+        && ln -s "${PWD}/ffprobe" /usr/local/bin/
+
+ENV ROON_SERVER_PKG=RoonServer_linuxx64.tar.bz2
+ENV ROON_SERVER_URL=https://download.roonlabs.net/builds/${ROON_SERVER_PKG}
+ENV ROON_DATAROOT=/data
+ENV ROON_ID_DIR=/data
 
 VOLUME [ "/app", "/data", "/music", "/backup" ]
 
-ADD run.sh /
-ENTRYPOINT /run.sh
+WORKDIR "/root"
+
+ADD run.sh /root
+
+RUN chmod +x /root/run.sh
+
+ENTRYPOINT ["/root/run.sh"]
