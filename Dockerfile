@@ -11,9 +11,8 @@ RUN tdnf update -y \
 
 RUN curl -O https://johnvansickle.com/ffmpeg/builds/${FFMPEG_PKG}
 
-RUN tar -xf ${FFMPEG_PKG} && rm ${FFMPEG_PKG}
-
-RUN mv ffmpeg-git-* /var/lib/ffmpeg
+RUN tar -xf ${FFMPEG_PKG} && rm ${FFMPEG_PKG} \
+        && mv ffmpeg-git-* /var/lib/ffmpeg
 
 WORKDIR "/var/lib/ffmpeg"
 
