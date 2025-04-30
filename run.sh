@@ -37,4 +37,11 @@ if test -z "$ROON_DATAROOT" -o -z "$ROON_ID_DIR"; then
     exit 1
 fi
 
+echo 'Outputting /app directory.'
+ls -al /app
+
+echo 'Outputting /app/RoonServer directory.'
+ls -al /app/RoonServer
+
+while true; do sleep 1; done
 /app/RoonServer/start.sh
