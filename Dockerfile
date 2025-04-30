@@ -6,8 +6,8 @@ ENV FFMPEG_PKG=ffmpeg-git-amd64-static.tar.xz
 
 WORKDIR "/root"
 
-RUN sudo apt-get update -y \
-        && sudo apt-get -y install bzip2 cifs-utils alsa-utils wget icu xz
+RUN apt-get update -y \
+        && apt-get -y install bzip2 cifs-utils alsa-utils wget icu xz
 
 RUN curl -O https://johnvansickle.com/ffmpeg/builds/${FFMPEG_PKG}
 
