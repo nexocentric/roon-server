@@ -36,4 +36,5 @@ if test -z "$ROON_DATAROOT" -o -z "$ROON_ID_DIR"; then
     echo "Dataroot ROON_DATAROOT and/or ID dir ROON_ID_DIR not set"
     exit 1
 fi
+
 /app/RoonServer/start.sh

@@ -32,4 +32,6 @@ ADD run.sh /root
 
 RUN chmod +x /root/run.sh
 
+EXPOSE 9330-9339/TCP 30000-30009/TCP 9003/UDP 32768-65535/UDP
+
 ENTRYPOINT ["/root/run.sh"]
