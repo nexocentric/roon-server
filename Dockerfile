@@ -1,4 +1,4 @@
-FROM photon:latest
+FROM ubuntu:latest
 
 LABEL org.opencontainers.image.authors="david@indisko.com"
 
@@ -6,8 +6,8 @@ ENV FFMPEG_PKG=ffmpeg-git-amd64-static.tar.xz
 
 WORKDIR "/root"
 
-RUN tdnf update -y \
-        && tdnf -y install sudo bzip2 cifs-utils alsa-utils wget icu xz
+RUN sudo apt-get update -y \
+        && sudo apt-get -y install bzip2 cifs-utils alsa-utils wget icu xz
 
 RUN curl -O https://johnvansickle.com/ffmpeg/builds/${FFMPEG_PKG}
 
