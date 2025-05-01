@@ -1,34 +1,42 @@
 #!/bin/bash
 
-ROON_PACKAGE_URI=${ROON_PACKAGE_URI-"http://download.roonlabs.com/builds/RoonServer_linuxx64.tar.bz2"}
-
-echo Starting RoonServer with user `whoami`
-
-# install Roon if not present
-if [ ! -f /opt/RoonServer/start.sh ]; then
-  echo Downloading Roon Server from ${ROON_PACKAGE_URI}
-  wget --progress=bar:force --tries=2 -O - ${ROON_PACKAGE_URI} | tar -xvj --overwrite -C /opt
-  if [ $? != 0 ]; then
-    echo Error: Unable to install Roon Server.
+# Check folder existence
+if test ! -w /app; then
+    echo "Application folder /app not present or not writable"
     exit 1
-  fi
 fi
 
-echo Verifying Roon installation
-/opt/RoonServer/check.sh
-retval=$?
-if [ ${retval} != 0 ]; then
-  echo Verification of Roon installation failed.
-  exit ${retval}
+if test ! -w /data; then
+    echo "Data folder /data not present or not writable"
+    exit 1
 fi
 
-# start Roon
-#
-# since we're invoking from a script, we need to
-# catch signals to terminate Roon nicely
-/opt/RoonServer/start.sh &
-roon_start_pid=$!
-trap 'kill -INT ${roon_start_pid}' SIGINT SIGQUIT SIGTERM
-wait "${roon_start_pid}" # block until Roon terminates
-retval=$?
-exit ${retval}
+# Check for shared folders which cause all kinds of weird errors on core updates
+rm -f /data/check-for-shared-with-data
+touch /app/check-for-shared-with-data
+if test -f /data/check-for-shared-with-data; then
+    echo "Application folder /app and Data folder /data are shared. Please fix this."
+    exit 1
+fi
+rm -f /app/check-for-shared-with-data
+
+# Optionally download the app
+cd /app
+if test ! -d RoonServer; then
+    if test -z "$ROON_SERVER_URL" -o -z "$ROON_SERVER_PKG"; then
+	echo "Missing URL ROON_SERVER_URL and/or app name ROON_SERVER_PKG"
+	exit 1
+    fi
+    curl -L $ROON_SERVER_URL -O
+    tar xjf $ROON_SERVER_PKG
+    rm -f $ROON_SERVER_PKG
+fi
+
+# Run the app
+if test -z "$ROON_DATAROOT" -o -z "$ROON_ID_DIR"; then
+    echo "Dataroot ROON_DATAROOT and/or ID dir ROON_ID_DIR not set"
+    exit 1
+fi
+
+echo 'Runningthe Roon App'
+/app/RoonServer/start.sh
