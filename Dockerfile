@@ -36,7 +36,7 @@ EXPOSE 30000-30010/tcp
 
 WORKDIR "/entrypoint"
 COPY run.sh .
-RUN chmod 755 /app/run.sh
+RUN chmod 755 /entrypoint/run.sh
 
 VOLUME [ "/app", "/data", "/music", "/backup" ]
 
