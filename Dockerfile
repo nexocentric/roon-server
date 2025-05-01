@@ -24,11 +24,21 @@ ENV ROON_SERVER_URL=https://download.roonlabs.net/builds/${ROON_SERVER_PKG}
 ENV ROON_DATAROOT=/data
 ENV ROON_ID_DIR=/data
 
+# Roon documented ports
+#  - multicast (discovery?)
+EXPOSE 9003/udp
+#  - Roon Display
+EXPOSE 9100/tcp
+#  - RAAT
+EXPOSE 9100-9200/tcp
+#  - Roon events from cloud to core (websocket?)
+EXPOSE 9200/tcp
+# Chromecast devices
+EXPOSE 30000-30010/tcp
+
 VOLUME [ "/app", "/data", "/music", "/backup" ]
 
-WORKDIR "/root"
-
-ADD ./run.sh /app/run.sh
+ADD ./run.sh .
 
 RUN chmod 755 /app/run.sh
 
