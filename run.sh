@@ -21,7 +21,8 @@ fi
 rm -f /app/check-for-shared-with-data
 
 # Optionally download the app
-cd /app
+mkdir -p /var/roon
+cd /var/roon
 if test ! -d RoonServer; then
     if test -z "$ROON_SERVER_URL" -o -z "$ROON_SERVER_PKG"; then
 	echo "Missing URL ROON_SERVER_URL and/or app name ROON_SERVER_PKG"
@@ -39,5 +40,5 @@ if test -z "$ROON_DATAROOT" -o -z "$ROON_ID_DIR"; then
 fi
 
 echo 'Running the Roon App'
-/app/RoonServer/start.sh
+/var/roon/RoonServer/start.sh
 while true; do sleep 1; done
