@@ -28,7 +28,7 @@ VOLUME [ "/app", "/data", "/music", "/backup" ]
 
 WORKDIR "/root"
 
-ADD ./run.sh ./run.sh
+ADD ./run.sh /app/run.sh
 
 RUN chmod 755 /app/run.sh
 
