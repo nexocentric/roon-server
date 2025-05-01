@@ -38,7 +38,7 @@ EXPOSE 30000-30010/tcp
 
 VOLUME [ "/app", "/data", "/music", "/backup" ]
 
-ADD ./run.sh .
+ADD ./run.sh /app/run.sh
 
 RUN chmod 755 /app/run.sh
 
