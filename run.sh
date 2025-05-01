@@ -28,8 +28,8 @@ if test ! -d RoonServer; then
 	exit 1
     fi
     curl -L $ROON_SERVER_URL -O
-    tar xjf $ROON_SERVER_PKG
-    rm -f $ROON_SERVER_PKG
+    tar -xjf $ROON_SERVER_PKG
+    chown -R root:root *
 fi
 
 # Run the app
@@ -38,5 +38,5 @@ if test -z "$ROON_DATAROOT" -o -z "$ROON_ID_DIR"; then
     exit 1
 fi
 
-echo 'Runningthe Roon App'
+echo 'Running the Roon App'
 /app/RoonServer/start.sh
