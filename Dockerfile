@@ -35,7 +35,7 @@ EXPOSE 9200/tcp
 EXPOSE 30000-30010/tcp
 
 WORKDIR "/app"
-COPY ./run.sh /app/run.sh
+COPY run.sh .
 RUN chmod 755 /app/run.sh
 
 VOLUME [ "/app", "/data", "/music", "/backup" ]
