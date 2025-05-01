@@ -5,6 +5,8 @@ LABEL org.opencontainers.image.authors="mackid1993"
 ENV FFMPEG_PKG=ffmpeg-git-amd64-static.tar.xz
 
 WORKDIR "/app"
+COPY ./run.sh .
+RUN chmod 755 /app/run.sh
 
 RUN tdnf update -y \
         && tdnf -y install sudo bzip2 cifs-utils alsa-utils wget icu xz
@@ -37,9 +39,5 @@ EXPOSE 9200/tcp
 EXPOSE 30000-30010/tcp
 
 VOLUME [ "/app", "/data", "/music", "/backup" ]
-
-COPY ./run.sh .
-
-RUN chmod 755 /app/run.sh
 
 ENTRYPOINT ["/app/run.sh"]
