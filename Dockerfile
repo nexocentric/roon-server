@@ -34,10 +34,10 @@ EXPOSE 9200/tcp
 # Chromecast devices
 EXPOSE 30000-30010/tcp
 
-WORKDIR "/app"
+WORKDIR "/entrypoint"
 COPY run.sh .
 RUN chmod 755 /app/run.sh
 
 VOLUME [ "/app", "/data", "/music", "/backup" ]
 
-ENTRYPOINT ["/app/run.sh"]
+ENTRYPOINT ["/entrypoint/run.sh"]
